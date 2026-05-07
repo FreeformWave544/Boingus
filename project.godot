@@ -11,8 +11,18 @@ config_version=5
 [application]
 
 config/name="Boingus"
+run/main_scene="uid://b3vapebrkvr83"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
+
+[layer_names]
+
+3d_physics/layer_1="Player"
+3d_physics/layer_2="World"
 
 [physics]
 

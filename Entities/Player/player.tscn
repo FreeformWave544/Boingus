@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://c6pyomhygy5t5"]
+
+[ext_resource type="Script" uid="uid://cvaluklpyv3su" path="res://Entities/Player/Player.gd" id="1_mv1ah"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mv1ah"]
+friction = 0.7
+rough = true
+bounce = 0.5
+absorbent = true
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_3uyv8"]
+height = 1.0
+radius = 0.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lu8i8"]
+top_radius = 0.25
+bottom_radius = 0.25
+height = 1.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_mv1ah"]
+height = 0.1
+radius = 0.25
+
+[node name="Player" type="RigidBody3D" unique_id=1648066007]
+collision_mask = 3
+physics_material_override = SubResource("PhysicsMaterial_mv1ah")
+script = ExtResource("1_mv1ah")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=453568057]
+shape = SubResource("CylinderShape3D_3uyv8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1120271356]
+mesh = SubResource("CylinderMesh_lu8i8")
+
+[node name="YawPivot" type="Node3D" parent="." unique_id=1935391508]
+
+[node name="PitchPivot" type="Node3D" parent="YawPivot" unique_id=1142511303]
+
+[node name="Camera3D" type="Camera3D" parent="YawPivot/PitchPivot" unique_id=1780210937]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0.7, 1)
+
+[node name="FloorDetector" type="ShapeCast3D" parent="." unique_id=860443582]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45035046, 0)
+shape = SubResource("CylinderShape3D_mv1ah")
+target_position = Vector3(0, -0.1, 0)
+collision_mask = 2
+collide_with_areas = true

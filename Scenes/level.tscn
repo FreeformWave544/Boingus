@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://b3vapebrkvr83"]
+
+[ext_resource type="Script" uid="uid://mq4ylwn6vme4" path="res://Scenes/level.gd" id="1_k5f4k"]
+[ext_resource type="PackedScene" uid="uid://c6pyomhygy5t5" path="res://Entities/Player/player.tscn" id="1_tumq0"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tumq0"]
+sky_top_color = Color(0.7411613, 0.14703801, 0.5962883, 1)
+sky_horizon_color = Color(0.6368576, 0.4491841, 0.5639879, 1)
+ground_bottom_color = Color(0.27592817, 0.119357266, 0.12932235, 1)
+ground_horizon_color = Color(0.6368576, 0.4491841, 0.5639879, 1)
+
+[sub_resource type="Sky" id="Sky_k5f4k"]
+sky_material = SubResource("ProceduralSkyMaterial_tumq0")
+
+[sub_resource type="Environment" id="Environment_6phgx"]
+background_mode = 2
+sky = SubResource("Sky_k5f4k")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_tumq0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k5f4k"]
+
+[sub_resource type="Gradient" id="Gradient_tumq0"]
+offsets = PackedFloat32Array(0.23972602, 0.30136988)
+colors = PackedColorArray(0, 0.57254905, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k5f4k"]
+noise_type = 2
+fractal_type = 3
+fractal_octaves = 2
+fractal_lacunarity = 10.0
+fractal_gain = 2.0
+fractal_ping_pong_strength = 10.0
+cellular_distance_function = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6phgx"]
+noise = SubResource("FastNoiseLite_k5f4k")
+color_ramp = SubResource("Gradient_tumq0")
+seamless = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_81xng"]
+albedo_texture = SubResource("NoiseTexture2D_6phgx")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tumq0"]
+height = 0.4
+
+[node name="Level" type="Node3D" unique_id=1480260138]
+script = ExtResource("1_k5f4k")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2138978530]
+environment = SubResource("Environment_6phgx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=639453095]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_color = Color(1, 0.6509804, 1, 1)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=400867398]
+mesh = SubResource("BoxMesh_tumq0")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1089196113]
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=1373967539]
+shape = SubResource("BoxShape3D_k5f4k")
+
+[node name="Player" parent="." unique_id=1648066007 instance=ExtResource("1_tumq0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Win" type="CSGTorus3D" parent="." unique_id=618206682]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+use_collision = true
+collision_layer = 2
+inner_radius = 0.2
+outer_radius = 0.5
+sides = 3
+smooth_faces = false
+material = SubResource("StandardMaterial3D_81xng")
+
+[node name="Area3D" type="Area3D" parent="Win" unique_id=1010946804]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Win/Area3D" unique_id=1537060364]
+shape = SubResource("CylinderShape3D_tumq0")
+
+[connection signal="body_entered" from="Win/Area3D" to="." method="_on_area_3d_body_entered"]
