@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://mq4ylwn6vme4" path="res://Scenes/level.gd" id="1_k5f4k"]
 [ext_resource type="PackedScene" uid="uid://c6pyomhygy5t5" path="res://Entities/Player/player.tscn" id="1_tumq0"]
+[ext_resource type="PackedScene" uid="uid://ck7j3et374bqs" path="res://Scenes/spike.tscn" id="3_6phgx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tumq0"]
 sky_top_color = Color(0.7411613, 0.14703801, 0.5962883, 1)
@@ -58,6 +59,7 @@ light_color = Color(1, 0.6509804, 1, 1)
 shadow_enabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=400867398]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 12, 0, 0, 0)
 mesh = SubResource("BoxMesh_tumq0")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1089196113]
@@ -70,7 +72,7 @@ shape = SubResource("BoxShape3D_k5f4k")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Win" type="CSGTorus3D" parent="." unique_id=618206682]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, -3)
 use_collision = true
 collision_layer = 2
 inner_radius = 0.2
@@ -83,5 +85,14 @@ material = SubResource("StandardMaterial3D_81xng")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Win/Area3D" unique_id=1537060364]
 shape = SubResource("CylinderShape3D_tumq0")
+
+[node name="Spike" parent="." unique_id=290276849 instance=ExtResource("3_6phgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 34.4, 0)
+
+[node name="Spike2" parent="." unique_id=1150706176 instance=ExtResource("3_6phgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 36.4, -1)
+
+[node name="Spike3" parent="." unique_id=703352022 instance=ExtResource("3_6phgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 38.4, -2)
 
 [connection signal="body_entered" from="Win/Area3D" to="." method="_on_area_3d_body_entered"]

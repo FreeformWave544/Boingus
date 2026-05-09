@@ -26,14 +26,18 @@ func _physics_process(_delta):
 func jump():
 	var jumpForce = jump_impulse - $MeshInstance3D.mesh.height
 	while Input.is_action_pressed("ui_accept"):
+		if $MeshInstance3D.mesh.height <= 0.0: await get_tree().process_frame ; continue
 		jumpForce += 0.01
-		$MeshInstance3D.mesh.height -= 0.01
+		$MeshInstance3D.mesh.height = max($MeshInstance3D.mesh.height - 0.01, 0.0)
+		$CollisionShape3D.shape.height = $MeshInstance3D.mesh.height
 		$MeshInstance3D.position.y -= 0.01
-		if $MeshInstance3D.mesh.height <= 0.0: break
+		$CollisionShape3D.position.y = $MeshInstance3D.position.y
 		await get_tree().process_frame
 	while ($MeshInstance3D.mesh.height <= 0.9) or ($MeshInstance3D.position.y >= 0.1):
 		$MeshInstance3D.mesh.height = lerp($MeshInstance3D.mesh.height, 1.0, 0.2)
+		$CollisionShape3D.shape.height = $MeshInstance3D.mesh.height
 		$MeshInstance3D.position.y = lerp($MeshInstance3D.position.y, 0.0, 0.2)
+		$CollisionShape3D.position.y = $MeshInstance3D.position.y
 		await get_tree().process_frame
 	if $FloorDetector.is_colliding(): apply_central_impulse(transform.basis * Vector3.UP * jumpForce)
 
